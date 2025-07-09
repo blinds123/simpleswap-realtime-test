@@ -50,12 +50,14 @@
         
         try {
             console.log('[SimpleMain] Buy button clicked');
+            window.addDebugMessage && window.addDebugMessage('🖱️ Buy button clicked');
             
             // Show loading
             const buyButton = document.getElementById('buy-button');
             if (buyButton) {
                 buyButton.textContent = 'Loading EUR→POL-MATIC...';
                 buyButton.disabled = true;
+                window.addDebugMessage && window.addDebugMessage('⏳ Button disabled, loading...');
             }
             
             // Build SimpleSwap URL - Try multiple approaches
@@ -95,7 +97,29 @@
             
             console.log('[SimpleMain] 🧪 TESTING STRATEGY:', testStrategy);
             
-            let workingUrl;
+            // Add visual debug output to page
+            const debugOutput = document.createElement('div');
+            debugOutput.id = 'debug-output';
+            debugOutput.style.cssText = `
+                position: fixed; top: 10px; right: 10px; width: 300px; 
+                background: rgba(0,0,0,0.9); color: white; padding: 10px; 
+                border-radius: 5px; font-family: monospace; font-size: 12px; 
+                max-height: 400px; overflow-y: auto; z-index: 9999;
+                border: 1px solid #333;
+            `;
+            debugOutput.innerHTML = `<strong>🧪 TESTING STRATEGY: ${testStrategy}</strong><br>`;
+            document.body.appendChild(debugOutput);
+            
+            // Function to add debug messages
+            window.addDebugMessage = function(message) {
+                const debugDiv = document.getElementById('debug-output');
+                if (debugDiv) {
+                    debugDiv.innerHTML += message + '<br>';
+                    debugDiv.scrollTop = debugDiv.scrollHeight;
+                }
+            };
+            
+            window.addDebugMessage(`🎯 Strategy: ${testStrategy}`);
             
             if (testStrategy === 'iframe') {
                 // Strategy H: Iframe approach - keep user on our page
@@ -115,6 +139,7 @@
                 return; // Don't redirect
             } else {
                 workingUrl = testStrategies[testStrategy] || testStrategies.basic;
+                window.addDebugMessage(`🔧 URL: ${workingUrl}`);
             }
             
             const urlFormats = Object.values(testStrategies).filter(url => url !== 'iframe');
@@ -141,6 +166,8 @@
             }
             
             console.log('[SimpleMain] Final URL:', workingUrl);
+            window.addDebugMessage && window.addDebugMessage(`🚀 REDIRECTING TO: ${workingUrl}`);
+            window.addDebugMessage && window.addDebugMessage(`⏰ Redirect in 1 second...`);
             
             // Redirect after short delay with additional Mercuryo enforcement
             setTimeout(() => {
