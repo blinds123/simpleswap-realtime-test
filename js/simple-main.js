@@ -151,9 +151,13 @@
                 }
             }, 1000);
             
+            // Initialize workingUrl
+            let workingUrl;
+            
             if (testStrategy === 'iframe') {
                 // Strategy H: Iframe approach - keep user on our page
                 console.log('[SimpleMain] 🖼️ IFRAME STRATEGY: Embedding SimpleSwap');
+                window.addDebugMessage('🖼️ IFRAME STRATEGY: Embedding SimpleSwap');
                 
                 // Create iframe container
                 const iframeContainer = document.createElement('div');
