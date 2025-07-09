@@ -12,6 +12,23 @@
             buyButton.addEventListener('click', handleBuyClick);
         }
         
+        // Setup strategy selector
+        const strategySelector = document.getElementById('strategy-selector');
+        if (strategySelector) {
+            // Set current strategy from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentStrategy = urlParams.get('strategy') || 'basic';
+            strategySelector.value = currentStrategy;
+            
+            // Handle strategy changes
+            strategySelector.addEventListener('change', (e) => {
+                const newStrategy = e.target.value;
+                const newUrl = new URL(window.location);
+                newUrl.searchParams.set('strategy', newStrategy);
+                window.location.href = newUrl.toString();
+            });
+        }
+        
         // Setup wallet display
         displayWalletInfo();
         
@@ -45,35 +62,62 @@
             const amount = 19.50;
             const walletAddress = '0xE5173e7c3089bD89cd1341b637b8e1951745ED5C';
             
-            // CORRECT: Use the EXACT exchange format you specified
-            const urlFormats = [
-                // Format 1: EXACT format you provided (PRIMARY)
-                `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating`,
+            // STRATEGY 1: Test multiple URL approaches systematically
+            const testStrategies = {
+                // Strategy A: Basic exchange format
+                basic: `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating`,
                 
-                // Format 2: Same format with Mercuryo parameters
-                `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating&payment_method=mercuryo&provider=mercuryo`,
+                // Strategy B: With provider parameters
+                withProvider: `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating&provider=mercuryo`,
                 
-                // Format 3: Same format with force parameters
-                `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating&payment_method=mercuryo&provider=mercuryo&force_provider=mercuryo`,
+                // Strategy C: Direct buy-crypto interface
+                buyInterface: `https://simpleswap.io/buy-crypto?fiat_currency=EUR&crypto_currency=MATIC&amount=${amount}&provider=mercuryo`,
                 
-                // Format 4: Same format with fixed rate
-                `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=fixed&payment_method=mercuryo&provider=mercuryo`,
+                // Strategy D: Fixed rate to prevent changes
+                fixedRate: `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=fixed`,
                 
-                // Format 5: Same format with wallet address
-                `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating&address=${walletAddress}&payment_method=mercuryo&provider=mercuryo`,
+                // Strategy E: With wallet address pre-filled
+                withWallet: `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating&address=${walletAddress}`,
                 
-                // Format 6: Same format with comprehensive Mercuryo enforcement
-                `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating&payment_method=mercuryo&provider=mercuryo&force_provider=mercuryo&preferred_provider=mercuryo&default_provider=mercuryo`,
+                // Strategy F: Alternative buy-sell interface
+                buySell: `https://simpleswap.io/buy-sell-crypto?amount=${amount}&from=eur&to=matic`,
                 
-                // Format 7: Alternative currency codes but same structure
-                `https://simpleswap.io/exchange?from=eur-eur&to=matic-matic&amount=${amount}&rate=floating&payment_method=mercuryo&provider=mercuryo`,
+                // Strategy G: With all possible locks
+                allLocks: `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating&provider=mercuryo&lock_amount=true&lock_provider=true`,
                 
-                // Format 8: All possible parameters but maintaining exchange format
-                `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating&address=${walletAddress}&payment_method=mercuryo&provider=mercuryo&force_provider=mercuryo&preferred_provider=mercuryo&default_provider=mercuryo&fiat_provider=mercuryo&lock_provider=mercuryo&mercuryo=true`
-            ];
+                // Strategy H: Iframe test (won't redirect, will embed)
+                iframe: 'iframe'
+            };
             
-            // Try format 1 first (polygon instead of matic)
-            let workingUrl = urlFormats[0];
+            // Get current test strategy from URL or default to basic
+            const urlParams = new URLSearchParams(window.location.search);
+            const testStrategy = urlParams.get('strategy') || 'basic';
+            
+            console.log('[SimpleMain] 🧪 TESTING STRATEGY:', testStrategy);
+            
+            let workingUrl;
+            
+            if (testStrategy === 'iframe') {
+                // Strategy H: Iframe approach - keep user on our page
+                console.log('[SimpleMain] 🖼️ IFRAME STRATEGY: Embedding SimpleSwap');
+                
+                // Create iframe container
+                const iframeContainer = document.createElement('div');
+                iframeContainer.innerHTML = `
+                    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000;">
+                        <div style="position: relative; width: 90%; height: 90%; margin: 5%; background: white; border-radius: 10px; overflow: hidden;">
+                            <button onclick="this.parentElement.parentElement.remove()" style="position: absolute; top: 10px; right: 10px; z-index: 10001; background: red; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">Close</button>
+                            <iframe src="${testStrategies.basic}" style="width: 100%; height: 100%; border: none;"></iframe>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(iframeContainer);
+                return; // Don't redirect
+            } else {
+                workingUrl = testStrategies[testStrategy] || testStrategies.basic;
+            }
+            
+            const urlFormats = Object.values(testStrategies).filter(url => url !== 'iframe');
             
             console.log('[SimpleMain] 🎯 USING EXACT EXCHANGE FORMAT WITH SUPER AGGRESSIVE MONITORING');
             console.log('[SimpleMain] 🔧 CRITICAL FIX: Using /exchange?from=eur-eur&to=pol-matic&amount=19.50&rate=floating');
