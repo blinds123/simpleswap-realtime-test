@@ -252,9 +252,9 @@ class AdaptiveSimpleSwapTester:
                 if i > 0:
                     self.analyze_patterns()
                 
-                # Adaptive delay based on results
+                # Adaptive delay based on results (shorter for faster testing)
                 if i < len(self.strategies) - 1:
-                    await asyncio.sleep(3)
+                    await asyncio.sleep(2)
             
             await browser.close()
         
