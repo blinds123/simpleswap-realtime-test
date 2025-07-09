@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline - SimpleSwap Checkout</title>
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --bg-dark: #1a1a2e;
+            --bg-light: #16213e;
+            --text-primary: #ffffff;
+            --text-secondary: #a8a8b3;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        
+        .offline-container {
+            background: var(--bg-light);
+            border-radius: 1rem;
+            padding: 3rem 2rem;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .offline-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+        }
+        
+        h1 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .retry-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+        
+        .retry-button:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+        
+        .retry-button:active {
+            transform: translateY(0);
+        }
+        
+        .status-message {
+            margin-top: 2rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        @media (max-width: 768px) {
+            .offline-container {
+                padding: 2rem 1.5rem;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .offline-icon {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">📡</div>
+        <h1>You're Offline</h1>
+        <p>
+            It looks like you've lost your internet connection. 
+            Please check your connection and try again.
+        </p>
+        <button class="retry-button" onclick="handleRetry()">
+            Try Again
+        </button>
+        <div class="status-message" id="status"></div>
+    </div>
+    
+    <script>
+        // Check connection status
+        function checkConnection() {
+            const statusEl = document.getElementById('status');
+            
+            if (navigator.onLine) {
+                statusEl.textContent = 'Connection restored! Redirecting...';
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1000);
+            } else {
+                statusEl.textContent = 'Still offline...';
+                setTimeout(() => {
+                    statusEl.textContent = '';
+                }, 3000);
+            }
+        }
+        
+        // Handle retry button
+        function handleRetry() {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = 'Checking connection...';
+            
+            // Force reload to check connection
+            setTimeout(() => {
+                if (navigator.onLine) {
+                    window.location.reload();
+                } else {
+                    checkConnection();
+                }
+            }, 500);
+        }
+        
+        // Listen for connection changes
+        window.addEventListener('online', () => {
+            checkConnection();
+        });
+        
+        window.addEventListener('offline', () => {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = 'Connection lost';
+        });
+        
+        // Check periodically
+        setInterval(checkConnection, 10000);
+    </script>
+</body>
+</html>

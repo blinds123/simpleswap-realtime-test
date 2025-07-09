@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Buy Polygon (MATIC) with EUR through SimpleSwap and Mercuryo. Secure, fast, and easy cryptocurrency purchase with competitive rates.">
+    
+    <!-- Security: CSP will be dynamically added by SecurityManager -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    
+    <!-- SEO and Social Media -->
+    <title>SimpleSwap Polygon Checkout - €19.50 | Secure Crypto Purchase</title>
+    <meta name="keywords" content="polygon, matic, cryptocurrency, buy crypto, simpleswap, mercuryo, EUR to MATIC">
+    <meta name="author" content="SimpleSwap">
+    <meta property="og:title" content="Buy Polygon (MATIC) with EUR - SimpleSwap">
+    <meta property="og:description" content="Purchase Polygon cryptocurrency with EUR through secure payment processing. Fast, easy, and reliable.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://checkout.simpleswap.io">
+    <meta property="og:image" content="https://checkout.simpleswap.io/images/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- Mobile Web App -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="SimpleSwap">
+    <meta name="theme-color" content="#1a1a2e">
+    
+    <!-- Performance: Resource Hints -->
+    <link rel="preconnect" href="https://api.simpleswap.io" crossorigin>
+    <link rel="preconnect" href="https://exchange.mercuryo.io" crossorigin>
+    <link rel="preconnect" href="https://ipapi.co" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link rel="dns-prefetch" href="https://api.mercuryo.io">
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
+    
+    <!-- Critical CSS (inline for performance) -->
+    <style>
+        /* Critical above-the-fold styles */
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #00d2d3;
+            --bg-dark: #1a1a2e;
+            --bg-light: #16213e;
+            --text-primary: #ffffff;
+            --text-secondary: #a8a8b3;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .app-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        
+        .checkout-container {
+            background: var(--bg-light);
+            border-radius: 1rem;
+            padding: 2rem;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Loading state */
+        .app-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        
+        .app-loading.loaded {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        /* Prevent layout shift */
+        .checkout-header { min-height: 80px; }
+        .amount-section { min-height: 100px; }
+        .wallet-section { min-height: 120px; }
+        .provider-section { min-height: 80px; }
+        .action-section { min-height: 60px; }
+    </style>
+    
+    <!-- Async CSS Loading -->
+    <link rel="preload" href="css/styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/styles.css"></noscript>
+    
+    <!-- Mobile-specific styles -->
+    <link rel="preload" href="css/mobile.css" as="style" media="(max-width: 768px)" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/mobile.css" media="(max-width: 768px)"></noscript>
+    
+    <!-- Web Fonts (async) -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💎</text></svg>">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FinancialService",
+        "name": "SimpleSwap Polygon Checkout",
+        "description": "Secure cryptocurrency exchange service for purchasing Polygon (MATIC) with EUR",
+        "url": "https://checkout.simpleswap.io",
+        "sameAs": ["https://simpleswap.io"],
+        "offers": {
+            "@type": "Offer",
+            "priceCurrency": "EUR",
+            "price": "19.50",
+            "itemOffered": {
+                "@type": "Product",
+                "name": "Polygon (MATIC)",
+                "category": "Cryptocurrency"
+            }
+        }
+    }
+    </script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="app-loading" id="app-loading">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Loading secure checkout...</p>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div class="app-container">
+        <div class="checkout-container">
+            <!-- Header -->
+            <header class="checkout-header">
+                <h1>Secure Crypto Purchase</h1>
+                <p class="subtitle">Fast and easy EUR to Polygon conversion</p>
+            </header>
+
+            <!-- Amount Section -->
+            <section class="amount-section" aria-label="Purchase amount">
+                <div class="amount-display">€19.50</div>
+                <div class="currency-selection">EUR → Polygon (MATIC)</div>
+            </section>
+
+            <!-- Wallet Section -->
+            <section class="wallet-section" aria-label="Wallet address">
+                <label for="wallet-display">Your Polygon Address:</label>
+                <div class="wallet-container">
+                    <div class="wallet-display" id="wallet-display" tabindex="0" role="textbox" aria-readonly="true">
+                        0xE5173e7c3089bD89cd1341b637b8e1951745ED5C
+                    </div>
+                    <button class="copy-button" id="copy-button" aria-label="Copy wallet address">
+                        <span class="copy-icon">📋</span>
+                        <span class="copy-text">Copy</span>
+                    </button>
+                </div>
+                <div class="wallet-copy-status" id="copy-status" role="status" aria-live="polite" style="display:none">
+                    ✓ Copied to clipboard!
+                </div>
+                
+                <!-- Fallback UI for manual copying -->
+                <div class="wallet-fallback" id="wallet-fallback" style="display:none">
+                    <p class="fallback-message">Click to select and copy manually:</p>
+                    <input type="text" value="0xE5173e7c3089bD89cd1341b637b8e1951745ED5C" 
+                           readonly class="wallet-input" id="wallet-input" 
+                           aria-label="Wallet address for manual copying">
+                    <button class="copy-button-secondary" id="copy-manual">Copy Manually</button>
+                </div>
+            </section>
+
+            <!-- Provider Section -->
+            <section class="provider-section" aria-label="Payment provider">
+                <div class="provider-selection">
+                    <div class="provider-badge">
+                        <span class="checkmark" aria-hidden="true">✓</span>
+                        <span class="provider-name">Mercuryo</span>
+                        <span class="provider-tag">Recommended</span>
+                    </div>
+                    <p class="provider-info">Secure payment processor with competitive rates</p>
+                </div>
+            </section>
+
+            <!-- Region Status -->
+            <div class="region-status" id="region-status" role="status" aria-live="polite" style="display:none"></div>
+
+            <!-- Action Section -->
+            <section class="action-section" aria-label="Purchase action">
+                <button class="buy-button" id="buy-button" aria-label="Buy cryptocurrency">
+                    <span class="button-text">Buy Crypto</span>
+                </button>
+                
+                <!-- Loading State -->
+                <div class="loading-state" id="loading-state" style="display:none">
+                    <div class="spinner" aria-hidden="true"></div>
+                    <p>Preparing secure checkout...</p>
+                </div>
+            </section>
+
+            <!-- Messages -->
+            <div class="messages" role="region" aria-live="polite" aria-atomic="true">
+                <div class="error-message" id="error-message" style="display:none"></div>
+                <div class="success-message" id="success-message" style="display:none"></div>
+                <div class="info-message" id="info-message" style="display:none"></div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="checkout-footer">
+                <div class="security-badges">
+                    <span class="badge" title="SSL encrypted connection">🔒 SSL Secured</span>
+                    <span class="badge" title="Fast transaction processing">⚡ Instant Processing</span>
+                    <span class="badge" title="Secure payment processing">🛡️ Safe & Secure</span>
+                </div>
+                <div class="powered-by">
+                    Powered by <strong>SimpleSwap</strong> & <strong>Mercuryo</strong>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Event Emitter Setup -->
+    <script>
+        // Global event emitter for cross-component communication
+        window.eventEmitter = new EventTarget();
+        
+        // Global configuration flags
+        window.DEV_CONFIG = {
+            testMode: false,
+            enableLogging: false,
+            showDebugUI: window.location.search.includes('debug')
+        };
+        
+        // Performance mark
+        performance.mark('page-start');
+    </script>
+
+    <!-- Configuration -->
+    <script src="config/config.js" defer></script>
+    
+    <!-- Simple Main Application -->
+    <script src="js/simple-main.js" defer></script>
+
+    <!-- Progressive Enhancement -->
+    <script>
+        // Remove loading screen when app is ready or after timeout
+        function removeLoader() {
+            const loader = document.getElementById('app-loading');
+            if (loader) {
+                loader.classList.add('loaded');
+                setTimeout(() => loader.remove(), 300);
+            }
+        }
+        
+        // Remove loader when body has app-ready class or after 2 seconds
+        function checkAppReady() {
+            if (document.body.classList.contains('app-ready')) {
+                removeLoader();
+            } else {
+                setTimeout(checkAppReady, 100);
+            }
+        }
+        
+        // Start checking after DOM is loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', checkAppReady);
+        } else {
+            checkAppReady();
+        }
+        
+        // Fallback: remove loader after 3 seconds
+        setTimeout(removeLoader, 3000);
+        
+        // Basic error boundary
+        window.addEventListener('error', function(e) {
+            console.error('Global error:', e.error);
+            // Show user-friendly error if app hasn't loaded
+            if (!window.errorHandler) {
+                const errorMsg = document.getElementById('error-message');
+                if (errorMsg) {
+                    errorMsg.textContent = 'An error occurred. Please refresh the page.';
+                    errorMsg.style.display = 'block';
+                }
+            }
+        });
+        
+        // Service Worker Registration (for PWA support)
+        if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js').catch(function(err) {
+                    console.warn('Service Worker registration failed:', err);
+                });
+            });
+        }
+    </script>
+
+    <!-- Analytics (non-blocking) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID', {
+            'anonymize_ip': true,
+            'transport_type': 'beacon',
+            'custom_map.dimension1': 'crypto_currency',
+            'custom_map.dimension2': 'payment_method'
+        });
+    </script>
+</body>
+</html>
