@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "SimpleSwap Force Mercuryo",
+  "version": "1.0.0",
+  "description": "Forces SimpleSwap to use Mercuryo with €19.50",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://*.simpleswap.io/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.simpleswap.io/*"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  }
+}

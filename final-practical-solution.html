@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Checkout - €19.50 EUR to MATIC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .option {
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .option:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+        }
+        
+        .option.recommended {
+            border-color: #28a745;
+            background: #f8fff9;
+        }
+        
+        .option-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .option-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .badge.recommended {
+            background: #28a745;
+            color: white;
+        }
+        
+        .badge.easy {
+            background: #ffc107;
+            color: #000;
+        }
+        
+        .badge.advanced {
+            background: #17a2b8;
+            color: white;
+        }
+        
+        .option-description {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .option-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option-button:hover {
+            background: #5a67d8;
+            transform: translateY(-1px);
+        }
+        
+        .instructions {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .instructions.show {
+            display: block;
+        }
+        
+        .instructions h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ol {
+            margin-left: 20px;
+            color: #856404;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        
+        .highlight {
+            background: yellow;
+            padding: 2px 6px;
+            font-weight: bold;
+            border-radius: 3px;
+        }
+        
+        .amount-info {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .amount-info h2 {
+            color: #1976d2;
+            margin-bottom: 5px;
+        }
+        
+        .amount-info p {
+            color: #666;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💳 Smart Checkout</h1>
+            <p>Choose the best way to buy MATIC with EUR</p>
+        </div>
+        
+        <div class="content">
+            <div class="amount-info">
+                <h2>€19.50 EUR → MATIC (Polygon)</h2>
+                <p>Select your preferred checkout method below</p>
+            </div>
+            
+            <!-- Option 1: Fee Reversal Trick -->
+            <div class="option recommended" onclick="selectOption(1)">
+                <div class="option-header">
+                    <div class="option-title">🧮 Smart Fee Adjustment</div>
+                    <span class="badge recommended">RECOMMENDED</span>
+                </div>
+                <div class="option-description">
+                    Start with €17.77 which becomes €19.50 after SimpleSwap's fees. 
+                    You'll need to manually select Mercuryo, but the amount will be correct.
+                </div>
+                <button class="option-button">Use This Method</button>
+                <div class="instructions" id="instructions-1">
+                    <h3>📋 Instructions:</h3>
+                    <ol>
+                        <li>You'll be redirected to SimpleSwap with €17.77</li>
+                        <li>Click on <span class="highlight">Mercuryo</span> provider</li>
+                        <li>The amount will automatically adjust to €19.50</li>
+                        <li>Complete your purchase</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <!-- Option 2: Direct Mercuryo -->
+            <div class="option" onclick="selectOption(2)">
+                <div class="option-header">
+                    <div class="option-title">🎯 Direct Mercuryo Widget</div>
+                    <span class="badge advanced">ADVANCED</span>
+                </div>
+                <div class="option-description">
+                    Skip SimpleSwap entirely and use Mercuryo's official widget. 
+                    Requires a Mercuryo business account for full integration.
+                </div>
+                <button class="option-button">Learn More</button>
+                <div class="instructions" id="instructions-2">
+                    <h3>📋 Setup Required:</h3>
+                    <ol>
+                        <li>Register at <span class="highlight">business.mercuryo.io</span></li>
+                        <li>Get your Widget ID</li>
+                        <li>Use the direct integration URL</li>
+                        <li>No amount changes, no provider switching!</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <!-- Option 3: Alternative Exchanges -->
+            <div class="option" onclick="selectOption(3)">
+                <div class="option-header">
+                    <div class="option-title">🔄 Alternative Exchanges</div>
+                    <span class="badge easy">EASY</span>
+                </div>
+                <div class="option-description">
+                    Use Changelly or ChangeNOW instead - they respect URL parameters 
+                    and won't change your amount or provider.
+                </div>
+                <button class="option-button">View Options</button>
+                <div class="instructions" id="instructions-3">
+                    <h3>📋 Alternative Options:</h3>
+                    <ol>
+                        <li><strong>Changelly:</strong> Reliable parameter support</li>
+                        <li><strong>ChangeNOW:</strong> No KYC required</li>
+                        <li><strong>MoonPay Direct:</strong> Skip the middleman</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <!-- Option 4: Manual SimpleSwap -->
+            <div class="option" onclick="selectOption(4)">
+                <div class="option-header">
+                    <div class="option-title">📝 Manual SimpleSwap Process</div>
+                    <span class="badge easy">EASY</span>
+                </div>
+                <div class="option-description">
+                    Go to SimpleSwap with clear instructions on exactly what to click. 
+                    Simple but requires manual selection of Mercuryo and amount.
+                </div>
+                <button class="option-button">Continue</button>
+                <div class="instructions" id="instructions-4">
+                    <h3>📋 Manual Steps:</h3>
+                    <ol>
+                        <li>Click continue to go to SimpleSwap</li>
+                        <li>Select <span class="highlight">Mercuryo</span> from providers</li>
+                        <li>Enter <span class="highlight">19.50</span> as amount</li>
+                        <li>Complete your purchase</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>💡 SimpleSwap ignores URL parameters by design. These workarounds ensure you get the correct amount.</p>
+        </footer>
+    </div>
+    
+    <script>
+        function selectOption(option) {
+            // Hide all instructions
+            document.querySelectorAll('.instructions').forEach(el => el.classList.remove('show'));
+            
+            // Show selected instructions
+            document.getElementById(`instructions-${option}`).classList.add('show');
+            
+            // Handle the actual redirect after 2 seconds
+            setTimeout(() => {
+                switch(option) {
+                    case 1:
+                        // Fee reversal trick - start with 17.77
+                        window.location.href = 'https://simpleswap.io/exchange?from=eur&to=matic&amount=17.77';
+                        break;
+                    case 2:
+                        // Direct Mercuryo (demo URL)
+                        alert('To use Mercuryo directly, register at business.mercuryo.io for a Widget ID');
+                        window.open('https://business.mercuryo.io', '_blank');
+                        break;
+                    case 3:
+                        // Show alternatives
+                        const alternatives = confirm('Try Changelly (OK) or ChangeNOW (Cancel)?');
+                        if (alternatives) {
+                            window.location.href = 'https://changelly.com/exchange/eur/matic?amount=19.50';
+                        } else {
+                            window.location.href = 'https://changenow.io/?from=eur&to=matic&amount=19.50&fiat=true';
+                        }
+                        break;
+                    case 4:
+                        // Manual SimpleSwap
+                        window.location.href = 'https://simpleswap.io/exchange?from=eur&to=matic';
+                        break;
+                }
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
