@@ -39,6 +39,14 @@
         document.body.classList.add('app-ready');
         
         console.log('[SimpleMain] Application ready');
+        
+        // Auto-test all strategies if autotest parameter is present
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('autotest') === 'true') {
+            setTimeout(() => {
+                runAutomatedTests();
+            }, 2000);
+        }
         console.log('[SimpleMain] 🔧 CRITICAL FIX: Using correct SimpleSwap exchange URL format');
         console.log('[SimpleMain] 📋 Format: /exchange?from=eur-eur&to=pol-matic&amount=19.50&rate=floating');
         console.log('[SimpleMain] 🎯 Target: EUR→POL-MATIC with Mercuryo auto-selection');
@@ -650,6 +658,94 @@
         document.addEventListener('DOMContentLoaded', initApp);
     } else {
         initApp();
+    }
+
+    // Automated testing function
+    function runAutomatedTests() {
+        console.log('[AutoTest] 🤖 Starting automated strategy testing...');
+        
+        const testStrategies = [
+            'basic', 'withProvider', 'buyInterface', 'fixedRate', 
+            'withWallet', 'buySell', 'allLocks', 'iframe'
+        ];
+        
+        const results = [];
+        
+        testStrategies.forEach((strategy, index) => {
+            setTimeout(() => {
+                console.log(`[AutoTest] Testing strategy ${index + 1}/8: ${strategy}`);
+                
+                // Test URL generation
+                const testUrl = generateTestUrl(strategy);
+                
+                // Test SimpleSwap availability  
+                fetch(testUrl, { method: 'HEAD', mode: 'no-cors' })
+                    .then(() => {
+                        results.push({ strategy, url: testUrl, status: 'accessible' });
+                        console.log(`[AutoTest] ✅ ${strategy}: URL accessible`);
+                    })
+                    .catch(() => {
+                        results.push({ strategy, url: testUrl, status: 'blocked' });
+                        console.log(`[AutoTest] ❌ ${strategy}: URL blocked`);
+                    })
+                    .finally(() => {
+                        if (results.length === testStrategies.length) {
+                            displayTestResults(results);
+                        }
+                    });
+            }, index * 1000); // Stagger tests
+        });
+    }
+    
+    function generateTestUrl(strategy) {
+        const amount = 19.50;
+        const walletAddress = '0xE5173e7c3089bD89cd1341b637b8e1951745ED5C';
+        
+        const strategies = {
+            basic: `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating`,
+            withProvider: `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating&provider=mercuryo`,
+            buyInterface: `https://simpleswap.io/buy-crypto?fiat_currency=EUR&crypto_currency=MATIC&amount=${amount}&provider=mercuryo`,
+            fixedRate: `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=fixed`,
+            withWallet: `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating&address=${walletAddress}`,
+            buySell: `https://simpleswap.io/buy-sell-crypto?amount=${amount}&from=eur&to=matic`,
+            allLocks: `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating&provider=mercuryo&lock_amount=true&lock_provider=true`,
+            iframe: `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating`
+        };
+        
+        return strategies[strategy] || strategies.basic;
+    }
+    
+    function displayTestResults(results) {
+        console.log('[AutoTest] 📊 Test Results Summary:');
+        
+        const resultDiv = document.createElement('div');
+        resultDiv.style.cssText = `
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: white; color: black; padding: 20px; border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 10000;
+            max-width: 600px; max-height: 400px; overflow-y: auto;
+            font-family: monospace; font-size: 14px;
+        `;
+        
+        let html = `<h3>🤖 Automated Test Results</h3>`;
+        html += `<p><strong>Testing completed:</strong> ${new Date().toLocaleTimeString()}</p>`;
+        
+        results.forEach(result => {
+            const status = result.status === 'accessible' ? '✅' : '❌';
+            html += `<div style="margin: 10px 0; padding: 10px; background: #f5f5f5; border-radius: 5px;">`;
+            html += `<strong>${status} ${result.strategy}</strong><br>`;
+            html += `<small>${result.url}</small><br>`;
+            html += `<em>Status: ${result.status}</em>`;
+            html += `</div>`;
+        });
+        
+        html += `<button onclick="this.parentElement.remove()" style="margin-top: 15px; padding: 10px 20px; background: #007cba; color: white; border: none; border-radius: 5px; cursor: pointer;">Close</button>`;
+        html += `<button onclick="window.location.href='?autotest=true&t=' + Date.now()" style="margin-top: 15px; margin-left: 10px; padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">Run Again</button>`;
+        
+        resultDiv.innerHTML = html;
+        document.body.appendChild(resultDiv);
+        
+        console.log('[AutoTest] 🎯 Test completed. Results displayed on page.');
     }
 
 })();
