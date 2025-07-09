@@ -72,30 +72,36 @@
             const amount = 19.50;
             const walletAddress = '0xE5173e7c3089bD89cd1341b637b8e1951745ED5C';
             
-            // STRATEGY 1: Test multiple URL approaches systematically
+            // FINAL COMPREHENSIVE STRATEGY: Test all known SimpleSwap parameters
             const testStrategies = {
-                // Strategy A: Basic exchange format
+                // Strategy A: Basic exchange format (YOUR PROVIDED EXAMPLE)
                 basic: `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating`,
                 
-                // Strategy B: With provider parameters
-                withProvider: `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating&provider=mercuryo`,
+                // Strategy B: With Mercuryo provider enforcement
+                withProvider: `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating&provider=mercuryo&payment_method=mercuryo`,
                 
-                // Strategy C: Direct buy-crypto interface
-                buyInterface: `https://simpleswap.io/buy-crypto?fiat_currency=EUR&crypto_currency=MATIC&amount=${amount}&provider=mercuryo`,
+                // Strategy C: Buy-crypto interface (may work better for fiat)
+                buyInterface: `https://simpleswap.io/buy-crypto?fiat_currency=EUR&crypto_currency=MATIC&amount=${amount}&provider=mercuryo&payment_method=mercuryo`,
                 
-                // Strategy D: Fixed rate to prevent changes
-                fixedRate: `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=fixed`,
+                // Strategy D: Fixed rate to prevent dynamic changes
+                fixedRate: `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=fixed&provider=mercuryo`,
                 
-                // Strategy E: With wallet address pre-filled
-                withWallet: `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating&address=${walletAddress}`,
+                // Strategy E: With pre-filled wallet address
+                withWallet: `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating&address=${walletAddress}&provider=mercuryo`,
                 
-                // Strategy F: Alternative buy-sell interface
-                buySell: `https://simpleswap.io/buy-sell-crypto?amount=${amount}&from=eur&to=matic`,
+                // Strategy F: Buy-sell interface (alternative approach)
+                buySell: `https://simpleswap.io/buy-sell-crypto?amount=${amount}&from=eur&to=matic&provider=mercuryo&payment_method=mercuryo`,
                 
-                // Strategy G: With all possible locks
-                allLocks: `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating&provider=mercuryo&lock_amount=true&lock_provider=true`,
+                // Strategy G: Maximum enforcement parameters
+                allLocks: `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating&provider=mercuryo&payment_method=mercuryo&force_provider=mercuryo&preferred_provider=mercuryo&lock_amount=${amount}&lock_provider=mercuryo`,
                 
-                // Strategy H: Iframe test (won't redirect, will embed)
+                // Strategy H: Alternative currency codes
+                altCurrency: `https://simpleswap.io/exchange?from=eur&to=matic&amount=${amount}&rate=floating&provider=mercuryo&payment_method=mercuryo`,
+                
+                // Strategy I: Direct Mercuryo path (if exists)
+                directMercuryo: `https://simpleswap.io/exchange?from=eur-eur&to=pol-matic&amount=${amount}&rate=floating&provider=mercuryo&payment_method=mercuryo&force_mercuryo=true&mercuryo_only=true`,
+                
+                // Strategy J: Iframe test (embed without redirect)
                 iframe: 'iframe'
             };
             
@@ -109,13 +115,13 @@
             const debugOutput = document.createElement('div');
             debugOutput.id = 'debug-output';
             debugOutput.style.cssText = `
-                position: fixed; top: 10px; right: 10px; width: 300px; 
+                position: fixed; top: 10px; right: 10px; width: 350px; 
                 background: rgba(0,0,0,0.9); color: white; padding: 10px; 
-                border-radius: 5px; font-family: monospace; font-size: 12px; 
-                max-height: 400px; overflow-y: auto; z-index: 9999;
+                border-radius: 5px; font-family: monospace; font-size: 11px; 
+                max-height: 500px; overflow-y: auto; z-index: 9999;
                 border: 1px solid #333;
             `;
-            debugOutput.innerHTML = `<strong>🧪 TESTING STRATEGY: ${testStrategy}</strong><br>`;
+            debugOutput.innerHTML = `<strong>🧪 LIVE TESTING: ${testStrategy}</strong><br>`;
             document.body.appendChild(debugOutput);
             
             // Function to add debug messages
@@ -127,7 +133,23 @@
                 }
             };
             
+            // Add current strategy info
             window.addDebugMessage(`🎯 Strategy: ${testStrategy}`);
+            window.addDebugMessage(`📅 Time: ${new Date().toLocaleTimeString()}`);
+            
+            // Add "Test All" button to debug panel
+            setTimeout(() => {
+                const debugDiv = document.getElementById('debug-output');
+                if (debugDiv) {
+                    const testButton = document.createElement('button');
+                    testButton.textContent = '🚀 Test All Strategies';
+                    testButton.style.cssText = 'margin-top: 10px; padding: 5px 10px; background: #007cba; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 11px;';
+                    testButton.onclick = () => {
+                        window.location.href = '?autotest=true&t=' + Date.now();
+                    };
+                    debugDiv.appendChild(testButton);
+                }
+            }, 1000);
             
             if (testStrategy === 'iframe') {
                 // Strategy H: Iframe approach - keep user on our page
